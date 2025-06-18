@@ -27,10 +27,10 @@ func Exec(m *matrix.Matrix) (int, int, int, int) {
 	m.ForEachPixelIndex(func(y, x int, p *matrix.Pixel) {
 		if isWhite(p) && !visited[y][x] {
 			region := floodFill(m, y, x, visited)
-			t := classifyRegion(region)
-			if t == CAPSULES {
+			typeRegion := classifyRegion(region)
+			if typeRegion == CAPSULES {
 				capsules++
-			} else if t == ROUND {
+			} else if typeRegion == ROUND {
 				rounds++
 			} else {
 				broken++

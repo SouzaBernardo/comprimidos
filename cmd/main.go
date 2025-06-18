@@ -25,7 +25,7 @@ type resultExpect struct {
 	rounds   int // Quantos são os comprimidos redondos
 }
 
-var results [5]resultExpect = [5]resultExpect{
+var results = [5]resultExpect{
 	{14, 0, 3, 11},
 	{12, 0, 3, 9},
 	{10, 2, 2, 6},
