@@ -6,9 +6,11 @@ import (
 	"github.com/SouzaBernardo/dip/internal/matrix"
 	"github.com/SouzaBernardo/dip/internal/preprocessing"
 	"github.com/SouzaBernardo/dip/internal/processing"
+	"github.com/SouzaBernardo/dip/pkg/image"
 )
 
 const path = "assets/Comprimidos_%d.png"
+const testImagePath = "test/image_%d.png"
 
 /*
 1. O total de comprimidos na esteira.
@@ -33,17 +35,23 @@ var results [5]resultExpect = [5]resultExpect{
 
 func main() {
 	for i, value := range results {
+		imagePath := fmt.Sprintf(path, i+1)
+		fmt.Println("\nProcessando imagem:", imagePath)
 
-		imagePath := fmt.Sprintf(path, i + 1)
 		m := matrix.NewMatrix(imagePath)
-
 		preprocessing.Exec(m)
-		w, x, y, z := processing.Exec(m)
+		if err := image.Save(m, fmt.Sprintf(testImagePath, i+1)); err != nil {
+			fmt.Println(err)
+			return
+		}
+		total, broken, capsules, rounds := processing.Exec(m)
 
-		fmt.Println("Image:", imagePath)
-		fmt.Println(w == value.total)
-		fmt.Println(x == value.broken)
-		fmt.Println(y == value.capsules)
-		fmt.Println(z == value.rounds)
+		fmt.Printf("\n================ Comparação dos Valores ================\n")
+		fmt.Printf("Total     → Esperado: %3d | Recebido: %3d | Iguais: %t\n", total, value.total, total == value.total)
+		fmt.Printf("Quebrados → Esperado: %3d | Recebido: %3d | Iguais: %t\n", broken, value.broken, broken == value.broken)
+		fmt.Printf("Cápsulas  → Esperado: %3d | Recebido: %3d | Iguais: %t\n", capsules, value.capsules, capsules == value.capsules)
+		fmt.Printf("Redondos  → Esperado: %3d | Recebido: %3d | Iguais: %t\n", rounds, value.rounds, rounds == value.rounds)
+		fmt.Println("========================================================")
+
 	}
 }

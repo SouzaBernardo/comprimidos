@@ -47,7 +47,7 @@ func isWhite(p *matrix.Pixel) bool {
 }
 
 func floodFill(m *matrix.Matrix, startY, startX int, visited [][]bool) []Point {
-	region := []Point{}
+	var region []Point
 	queue := []Point{{startY, startX}}
 
 	for len(queue) > 0 {
